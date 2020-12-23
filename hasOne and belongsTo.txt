@@ -1,0 +1,67 @@
+One to one relationship:
+
+table1: user (id,name,email). table2: phone(id,user_id,phone)
+
+General Way:
+
+Controller:UserController
+
+Use DB;
+
+Method:
+ //$user = User::all(); // Optional part
+  $user = DB::table('users)->join('phones','users.id','phones.user_id')->get();
+// access the data $row->phone
+// $variable_name->db_field name from phone table.
+
+Laravel Eloquent Way:
+
+ Go to user model ->then write a method -> 
+	// user model e method likbo, phone model e likte hobe na bcz phone method e user id ache.
+			
+	public function phone(){
+	// Onno table tekhe anle has function use hoi
+	return $this->hasOne(Phone::class);
+	
+	access to view page like this: $row->phone->phone;
+					$variable->model_method->db_field name.
+
+       }
+
+One to One (Belongs To):table1: phone(id,user_id,phone), table2: user (id,name,email)
+
+General Way:
+
+Controller:PhoneController
+
+Use DB;
+
+Method:
+ //$user = Phone::all(); // Optional part
+  $user = DB::table('phones)->join('users','phone.user_id','user.id')->get();
+// access the data $row->name
+// $variable_name->db_field name from phone table.
+// Fetch more data field (another way)
+$user = DB::table('phones)->join('users','phone.user_id','user.id')->select('phones.*,'users.name','users,email')->get();
+
+
+Laravel Eloquent Way:
+
+ Go to user model ->then write a method -> 
+	// user model e method likbo, phone model e likte hobe na bcz phone method e user id ache.
+			
+	public function User(){
+	// User table tekhe user name access korbo, jeta phone table e user_id use kore kora jabe. tai belongs to 
+
+	return $this->belongsTo(User::class);
+	
+	access to view page like this: $row->user->name;
+					$variable->model_method->db_field name.
+
+       }
+
+
+
+
+  
+

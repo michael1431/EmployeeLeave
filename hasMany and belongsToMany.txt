@@ -1,0 +1,68 @@
+
+Table1:posts(id,user_id,category_id,title,description).
+Table2.categories()
+Table3:users(id,name,email)
+Table4:phones(id,user_id,phone)
+// kono page e controller chara db tekhe access korte caile:
+
+     @php
+      
+     $user = App\User::all();   
+    
+     @endphp
+
+General way to access more table in laravel without eloquent relationship:
+  
+Controller:PostController
+
+Use DB;
+
+Method:
+ //$user = User::all(); // Optional part
+  $user = DB::table('posts)->join('users','posts.user_id','users.user_id')
+        ->join('categories','posts.category_id','categories.id')
+        ->get();
+// access the data $row->phone
+// $variable_name->db_field name from phone table.
+
+
+Laravel Eloquent Way(belongsToMany) relationship::
+
+ Go to post model ->then write a method -> 
+	// post model e method likbo bcz ai table e user id and category id ache
+			
+	public function category(){
+	// User table tekhe user name access korbo, jeta phone table e user_id use kore kora jabe. tai belongs to 
+
+	return $this->belongsTo(Category::class);
+	
+	access to view page like this: $row->category->name;
+					$variable->model_method->db_field name.
+
+       }
+
+        public function user(){
+	// User table tekhe user name access korbo, jeta phone table e user_id use kore kora jabe. tai belongs to 
+
+	return $this->belongsTo(User::class);
+	
+	access to view page like this: $row->user->name;
+					$variable->model_method->db_field name.
+
+       }
+
+Laravel Eloquent Way(hasMany) relationship::
+
+ User Model:
+
+ public function posts(){
+	// User table tekhe user name access korbo, jeta phone table e user_id use kore kora jabe. tai belongs to 
+
+	return $this->hasMany(Post::class);
+	
+	access to view page like this: $row->post->name;
+					$variable->model_method->db_field name.
+
+       }
+
+  
